@@ -1,6 +1,8 @@
-import express, { Request, Response } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import { body, validationResult } from 'express-validator';
 import { ValidationError } from '../errors/Validation/ValidationError';
+import { User } from '../models/User';
+import { ResourceExistsError } from '../errors/ResourceExists/ResourceExistsError';
 
 const router = express.Router();
 
@@ -11,15 +13,23 @@ router.post(
     .trim()
     .isLength({ min: 4, max: 20 })
     .withMessage('Password must be between 4 and 20 characters'),
-  (req: Request, res: Response) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req);
     if (errors.isEmpty() === false) {
-      throw new ValidationError(errors.array());
+      next(new ValidationError(errors.array()));
+      return;
     }
     const { email, password } = req.body;
-    console.log({ email, password });
 
-    res.send('Hello');
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      next(new ResourceExistsError('email', email));
+      return;
+    }
+
+    const user = User.build({ email, password });
+    await user.save();
+    res.send(user);
   }
 );
 
