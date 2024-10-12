@@ -1,11 +1,9 @@
 import { FieldValidationError } from 'express-validator';
 import { ProblemDocument } from 'http-problem-details';
 import { ErrorMapper } from 'http-problem-details-mapper';
-import { ValidationError } from './ValidationError';
-import {
-  ErrorDetail,
-  ValidationProblemDocument,
-} from './ValidationProblemDocument';
+import { ErrorDetail, ValidationError } from './ValidationError';
+
+import { BadRequestProblemDocument } from '../BadRequestProblemDocument';
 
 export class ValidationErrorMapper extends ErrorMapper {
   constructor() {
@@ -26,6 +24,10 @@ export class ValidationErrorMapper extends ErrorMapper {
     for (const [key, value] of map) {
       errorDetails[key] = value;
     }
-    return new ValidationProblemDocument(errorDetails);
+    return new BadRequestProblemDocument(
+      '',
+      'One or more validation errors occurred.',
+      { errors: errorDetails }
+    );
   }
 }

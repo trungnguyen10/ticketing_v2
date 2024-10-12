@@ -7,11 +7,11 @@ import {
   MapperRegistry,
 } from 'http-problem-details-mapper';
 import mongoose from 'mongoose';
+import { ResourceExistsErrorMapper } from './errors/BadRequest/ResourceExists/ResourceExistsErrorMapper';
+import { ValidationErrorMapper } from './errors/BadRequest/Validation/ValidationErrorMapper';
 import { GenericErrorMapper } from './errors/GenericErrorMapper';
 import { NotFoundError } from './errors/NotFound/NotFoundError';
 import { NotFoundErrorMapper } from './errors/NotFound/NotFoundErrorMapper';
-import { ResourceExistsErrorMapper } from './errors/ResourceExists/ResourceExistsErrorMapper';
-import { ValidationErrorMapper } from './errors/Validation/ValidationErrorMapper';
 import { errorHandler } from './middlewares/error-handler';
 import { currentUserRouter } from './routes/current-user';
 import { signInRouter } from './routes/signin';

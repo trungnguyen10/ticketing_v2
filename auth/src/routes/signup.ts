@@ -1,8 +1,8 @@
 import express, { NextFunction, Request, Response } from 'express';
 import { body, validationResult } from 'express-validator';
-import { ValidationError } from '../errors/Validation/ValidationError';
+import { ValidationError } from '../errors/BadRequest/Validation/ValidationError';
 import { User } from '../models/User';
-import { ResourceExistsError } from '../errors/ResourceExists/ResourceExistsError';
+import { ResourceExistsError } from '../errors/BadRequest/ResourceExists/ResourceExistsError';
 import jwt from 'jsonwebtoken';
 import { UserDto } from '../Dtos/UserDto';
 

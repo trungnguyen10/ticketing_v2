@@ -1,7 +1,7 @@
 import { ProblemDocument } from 'http-problem-details';
 import { ErrorMapper } from 'http-problem-details-mapper';
 import { ResourceExistsError } from './ResourceExistsError';
-import { ResourceExistsProblemDocument } from './ResourceExistsProblemDocument';
+import { BadRequestProblemDocument } from '../BadRequestProblemDocument';
 
 export class ResourceExistsErrorMapper extends ErrorMapper {
   constructor() {
@@ -9,9 +9,9 @@ export class ResourceExistsErrorMapper extends ErrorMapper {
   }
   mapError(error: Error): ProblemDocument {
     const resourceExistsError = error as ResourceExistsError;
-    return new ResourceExistsProblemDocument(
-      resourceExistsError.resourceName,
-      resourceExistsError.resourceId
+    return new BadRequestProblemDocument(
+      resourceExistsError.message,
+      resourceExistsError.title
     );
   }
 }
