@@ -1,4 +1,5 @@
 import { json } from 'body-parser';
+import cookieSession from 'cookie-session';
 import express from 'express';
 import { HttpProblemResponse } from 'express-http-problem-details';
 import {
@@ -9,13 +10,13 @@ import mongoose from 'mongoose';
 import { GenericErrorMapper } from './errors/GenericErrorMapper';
 import { NotFoundError } from './errors/NotFound/NotFoundError';
 import { NotFoundErrorMapper } from './errors/NotFound/NotFoundErrorMapper';
+import { ResourceExistsErrorMapper } from './errors/ResourceExists/ResourceExistsErrorMapper';
 import { ValidationErrorMapper } from './errors/Validation/ValidationErrorMapper';
 import { errorHandler } from './middlewares/error-handler';
 import { currentUserRouter } from './routes/current-user';
 import { signInRouter } from './routes/signin';
 import { signOutRouter } from './routes/signout';
 import { signUpRouter } from './routes/signup';
-import { ResourceExistsErrorMapper } from './errors/ResourceExists/ResourceExistsErrorMapper';
 
 const strategy = new DefaultMappingStrategy(
   new MapperRegistry({ useDefaultErrorMapper: false })
@@ -26,8 +27,14 @@ const strategy = new DefaultMappingStrategy(
 );
 
 const app = express();
-
+app.set('trust proxy', true);
 app.use(json());
+app.use(
+  cookieSession({
+    signed: false,
+    secure: true,
+  })
+);
 app.use(currentUserRouter);
 app.use(signInRouter);
 app.use(signOutRouter);
@@ -37,6 +44,10 @@ app.all('*', async (_req, _res, next) => {
 });
 app.use(errorHandler);
 app.use(HttpProblemResponse({ strategy }));
+
+if (!process.env.JWT_KEY) {
+  throw new Error('JWT_KEY is not defined.');
+}
 
 mongoose
   .connect('mongodb://auth-mongo-srv:27017/auth')

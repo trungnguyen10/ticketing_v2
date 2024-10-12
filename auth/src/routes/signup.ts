@@ -3,6 +3,8 @@ import { body, validationResult } from 'express-validator';
 import { ValidationError } from '../errors/Validation/ValidationError';
 import { User } from '../models/User';
 import { ResourceExistsError } from '../errors/ResourceExists/ResourceExistsError';
+import jwt from 'jsonwebtoken';
+import { UserDto } from '../Dtos/UserDto';
 
 const router = express.Router();
 
@@ -29,7 +31,20 @@ router.post(
 
     const user = User.build({ email, password });
     await user.save();
-    res.send(user);
+
+    const userJwt = jwt.sign(
+      {
+        id: user.id,
+        email: user.email,
+      },
+      process.env.JWT_KEY!
+    );
+
+    req.session = {
+      jwt: userJwt,
+    };
+
+    res.status(201).send(new UserDto(user));
   }
 );
 

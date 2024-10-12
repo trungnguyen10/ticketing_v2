@@ -10,7 +10,7 @@ interface UserModel extends Model<UserDocument> {
   build(userProperties: IUser): UserDocument;
 }
 
-interface UserDocument extends Document {
+export interface UserDocument extends Document {
   email: string;
   password: string;
 }
@@ -30,6 +30,4 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
-const User = model<UserDocument, UserModel>('User', userSchema);
-
-export { User };
+export const User = model<UserDocument, UserModel>('User', userSchema);
