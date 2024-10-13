@@ -12,7 +12,7 @@ import { ValidationErrorMapper } from './errors/BadRequest/Validation/Validation
 import { GenericErrorMapper } from './errors/GenericErrorMapper';
 import { NotFoundError } from './errors/NotFound/NotFoundError';
 import { NotFoundErrorMapper } from './errors/NotFound/NotFoundErrorMapper';
-import { errorHandler } from './middlewares/error-handler';
+import { errorHandler } from './middlewares/errorHandler';
 import { currentUserRouter } from './routes/current-user';
 import { signInRouter } from './routes/signin';
 import { signOutRouter } from './routes/signout';

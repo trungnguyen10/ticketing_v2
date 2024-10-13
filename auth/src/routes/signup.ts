@@ -1,10 +1,10 @@
 import express, { NextFunction, Request, Response } from 'express';
-import { body, validationResult } from 'express-validator';
-import { ValidationError } from '../errors/BadRequest/Validation/ValidationError';
-import { User } from '../models/User';
-import { ResourceExistsError } from '../errors/BadRequest/ResourceExists/ResourceExistsError';
+import { body } from 'express-validator';
 import jwt from 'jsonwebtoken';
 import { UserDto } from '../Dtos/UserDto';
+import { ResourceExistsError } from '../errors/BadRequest/ResourceExists/ResourceExistsError';
+import { validateRequest } from '../middlewares/validateRequest';
+import { User } from '../models/User';
 
 const router = express.Router();
 
@@ -15,12 +15,8 @@ router.post(
     .trim()
     .isLength({ min: 4, max: 20 })
     .withMessage('Password must be between 4 and 20 characters'),
+  validateRequest,
   async (req: Request, res: Response, next: NextFunction) => {
-    const errors = validationResult(req);
-    if (errors.isEmpty() === false) {
-      next(new ValidationError(errors.array()));
-      return;
-    }
     const { email, password } = req.body;
 
     const existingUser = await User.findOne({ email });

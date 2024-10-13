@@ -3,8 +3,20 @@ Content-Type: application/json
 
 {
     "email": "test@test.com",
-    "password": "123456789"
+    "password": "12345678"
 }
 
 ###
 GET https://ticketing.dev/api/users/currentuser
+
+###
+POST https://ticketing.dev/api/users/signin
+Content-Type: application/json
+
+{
+    "email": "test@test.com",
+    "password": "12345678"
+}
+
+###
+POST https://ticketing.dev/api/users/signout
