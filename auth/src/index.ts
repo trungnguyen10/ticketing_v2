@@ -17,6 +17,7 @@ import { currentUserRouter } from './routes/current-user';
 import { signInRouter } from './routes/signin';
 import { signOutRouter } from './routes/signout';
 import { signUpRouter } from './routes/signup';
+import { InvalidErrorMapper } from './errors/BadRequest/InvalidErrorMapper';
 
 const strategy = new DefaultMappingStrategy(
   new MapperRegistry({ useDefaultErrorMapper: false })
@@ -24,6 +25,7 @@ const strategy = new DefaultMappingStrategy(
     .registerMapper(new ValidationErrorMapper())
     .registerMapper(new NotFoundErrorMapper())
     .registerMapper(new ResourceExistsErrorMapper())
+    .registerMapper(new InvalidErrorMapper())
 );
 
 const app = express();
