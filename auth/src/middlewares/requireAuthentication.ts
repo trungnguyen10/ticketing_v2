@@ -3,7 +3,7 @@ import { UnauthorizedError } from '../errors/Unauthorized/UnauthorizedError';
 
 export const requireAuthentication = (
   req: Request,
-  res: Response,
+  _res: Response,
   next: NextFunction
 ) => {
   if (req.currentUser) {

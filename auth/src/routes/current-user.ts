@@ -3,7 +3,7 @@ import { requireAuthentication } from '../middlewares/requireAuthentication';
 
 const router = express.Router();
 
-router.get('/api/users/currentuser', requireAuthentication, (req, res) => {
+router.get('/api/users/currentuser', (req, res) => {
   res.send({ currentUser: req.currentUser ?? null });
 });
 
