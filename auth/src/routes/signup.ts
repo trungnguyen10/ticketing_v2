@@ -1,9 +1,8 @@
+import { ResourceExistsError, validateRequest } from '@tnticketingdev/common';
 import express, { NextFunction, Request, Response } from 'express';
 import { body } from 'express-validator';
 import jwt from 'jsonwebtoken';
 import { UserDto } from '../Dtos/UserDto';
-import { ResourceExistsError } from '../errors/BadRequest/ResourceExists/ResourceExistsError';
-import { validateRequest } from '../middlewares/validateRequest';
 import { User } from '../models/User';
 
 const router = express.Router();

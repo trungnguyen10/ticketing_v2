@@ -1,10 +1,8 @@
+import { InvalidError, validateRequest } from '@tnticketingdev/common';
 import express, { NextFunction, Request, Response } from 'express';
 import { body } from 'express-validator';
 import jwt from 'jsonwebtoken';
 import { UserDto } from '../Dtos/UserDto';
-import { InvalidError } from '../errors/BadRequest/InvalidError';
-import { NotFoundError } from '../errors/NotFound/NotFoundError';
-import { validateRequest } from '../middlewares/validateRequest';
 import { User } from '../models/User';
 import { Password } from '../utilities/Password';
 

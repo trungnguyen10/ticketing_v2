@@ -135,3 +135,5 @@ Thumbs.db
 
 # Visual Studio Code
 .vscode/
+
+common/build

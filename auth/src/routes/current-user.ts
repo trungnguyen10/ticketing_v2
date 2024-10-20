@@ -1,5 +1,4 @@
 import express from 'express';
-import { requireAuthentication } from '../middlewares/requireAuthentication';
 
 const router = express.Router();
 

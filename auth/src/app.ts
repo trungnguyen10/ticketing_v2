@@ -1,3 +1,14 @@
+import {
+  currentUserHandler,
+  errorHandler,
+  GenericErrorMapper,
+  InvalidErrorMapper,
+  NotFoundError,
+  NotFoundErrorMapper,
+  ResourceExistsErrorMapper,
+  UnauthorizedErrorMapper,
+  ValidationErrorMapper,
+} from '@tnticketingdev/common';
 import { json } from 'body-parser';
 import cookieSession from 'cookie-session';
 import express from 'express';
@@ -6,15 +17,6 @@ import {
   DefaultMappingStrategy,
   MapperRegistry,
 } from 'http-problem-details-mapper';
-import { InvalidErrorMapper } from './errors/BadRequest/InvalidErrorMapper';
-import { ResourceExistsErrorMapper } from './errors/BadRequest/ResourceExists/ResourceExistsErrorMapper';
-import { ValidationErrorMapper } from './errors/BadRequest/Validation/ValidationErrorMapper';
-import { GenericErrorMapper } from './errors/GenericErrorMapper';
-import { NotFoundError } from './errors/NotFound/NotFoundError';
-import { NotFoundErrorMapper } from './errors/NotFound/NotFoundErrorMapper';
-import { UnauthorizedErrorMapper } from './errors/Unauthorized/UnauthorizedErrorMapper';
-import { currentUserHandler } from './middlewares/currentUseHandler';
-import { errorHandler } from './middlewares/errorHandler';
 import { currentUserRouter } from './routes/current-user';
 import { signInRouter } from './routes/signin';
 import { signOutRouter } from './routes/signout';
