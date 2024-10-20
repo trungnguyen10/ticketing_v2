@@ -17,7 +17,7 @@ const auth = () => {
       setValidationErrors(map);
       return;
     }
-
+    console.log(err);
     setGenericErrors(err);
   };
 
@@ -93,6 +93,7 @@ const auth = () => {
       {genericErrors && (
         <div className="alert alert-danger" role="alert">
           {genericErrors.title}
+          {genericErrors.detail ? `: ${genericErrors.detail}` : ''}
         </div>
       )}
       <button type="submit" className="btn btn-primary">
