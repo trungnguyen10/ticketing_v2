@@ -17,6 +17,7 @@ import {
   DefaultMappingStrategy,
   MapperRegistry,
 } from 'http-problem-details-mapper';
+import { createTicket } from './routes/createTicket';
 
 const strategy = new DefaultMappingStrategy(
   new MapperRegistry({ useDefaultErrorMapper: false })
@@ -38,6 +39,9 @@ app.use(
   })
 );
 app.use(currentUserHandler);
+
+app.use(createTicket);
+
 app.use('/', (req, res) => {
   res.send('hello from tickets');
 });
