@@ -12,11 +12,11 @@ router.post(
   body('title').trim().notEmpty().withMessage('Title is required'),
   body('price').isFloat({ gt: 0 }).withMessage('Price must be greater than 0'),
   validateRequest,
-  (req: Request, res: Response) => {
+  async (req: Request, res: Response) => {
     const userId = req.currentUser!.id;
     const { title, price } = req.body;
     const ticket = Ticket.build({ title, price, userId });
-    ticket.save();
+    await ticket.save();
     res
       .status(201)
       .send(

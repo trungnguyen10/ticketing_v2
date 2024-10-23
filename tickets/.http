@@ -9,3 +9,12 @@ Content-Type: application/json
     "title": "ATSH",
     "price": "10.50"
 }
+
+###
+GET https://ticketing.dev/api/tickets/67186aca8444756aa998f30a
+
+###
+GET https://ticketing.dev/api/tickets/67186aca8444756aa998f30
+
+###
+GET https://ticketing.dev/api/tickets/67186aca8444756aa998f30b
