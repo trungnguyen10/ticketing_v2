@@ -1,0 +1,51 @@
+POST https://ticketing.dev/api/users/signup
+Content-Type: application/json
+
+{
+    "email": "test@test.com",
+    "password": "12345678"
+}
+
+###
+GET https://ticketing.dev/api/users/currentuser
+
+###
+POST https://ticketing.dev/api/users/signin
+Content-Type: application/json
+
+{
+    "email": "test@test.com",
+    "password": "12345678"
+}
+
+###
+POST https://ticketing.dev/api/users/signout
+
+GET https://ticketing.dev/api/tickets
+
+###
+POST https://ticketing.dev/api/tickets
+Content-Type: application/json
+
+{
+    "title": "ATSH",
+    "price": "10.50"
+}
+
+###
+GET https://ticketing.dev/api/tickets/6719bbda08918ae21b4ddf1f
+
+###
+GET https://ticketing.dev/api/tickets/67186aca8444756aa998f30
+
+###
+GET https://ticketing.dev/api/tickets/67186aca8444756aa998f30b
+
+###
+PUT https://ticketing.dev/api/tickets/6719bd825aa5113dd83d01f8
+Content-Type: application/json
+
+{
+    "title": "ATSH",
+    "price": "10.50"
+}
