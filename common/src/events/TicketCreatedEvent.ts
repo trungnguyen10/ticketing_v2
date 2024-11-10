@@ -4,6 +4,7 @@ export interface TicketPayload {
   id: string;
   title: string;
   price: number;
+  userId: string;
 }
 
 export interface TicketCreatedEvent {

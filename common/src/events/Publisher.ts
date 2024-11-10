@@ -9,14 +9,14 @@ export abstract class Publisher<T extends DomainEvent> {
 
   constructor(
     connection: AmqpConnection,
-    private linkAddressResolver: (topic: T['topic']) => string
+    private resolveLinkAddress: (topic: T['topic']) => string
   ) {
     this.connection = connection.connection!;
   }
 
   publishAsync(payload: T['payload']) {
     if (!this.sender) {
-      const address = this.linkAddressResolver(this.topic);
+      const address = this.resolveLinkAddress(this.topic);
       this.sender = this.connection.open_sender({ target: address });
     }
     const sender = this.sender;
