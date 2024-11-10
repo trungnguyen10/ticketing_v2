@@ -10,7 +10,7 @@ export abstract class Subscriber<T extends DomainEvent> {
 
   constructor(
     connection: Connection,
-    private linkAddressResolver: (topic: T['topic'], queue: string) => string
+    private resolveLinkAddress: (topic: T['topic'], queue: string) => string
   ) {
     this.connection = connection;
   }
@@ -18,7 +18,7 @@ export abstract class Subscriber<T extends DomainEvent> {
   subscribe() {
     if (!this.receiver) {
       this.receiver = this.connection.open_receiver({
-        source: this.linkAddressResolver(this.topic, this.queue),
+        source: this.resolveLinkAddress(this.topic, this.queue),
         autoaccept: false, // Disables auto-acknowledgment
       });
     }

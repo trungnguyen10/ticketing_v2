@@ -17,3 +17,10 @@ export * from './middlewares/currentUseHandler';
 export * from './middlewares/errorHandler';
 export * from './middlewares/requireAuthentication';
 export * from './middlewares/validateRequest';
+
+export * from './events/AmqpConnection';
+export * from './events/DomainEvent';
+export * from './events/DomainTopic';
+export * from './events/Publisher';
+export * from './events/Subscriber';
+export * from './events/TicketCreatedEvent';
