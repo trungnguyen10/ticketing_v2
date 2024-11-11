@@ -11,3 +11,8 @@ export interface TicketCreatedEvent {
   topic: DomainTopic.TicketCreated;
   payload: TicketPayload;
 }
+
+export interface TicketUpdatedEvent {
+  topic: DomainTopic.TicketUpdated;
+  payload: TicketPayload;
+}
