@@ -13,13 +13,13 @@ export class AmqpConnection {
     return this._connection;
   }
 
-  constructor(private option?: ConnectionOptions) {}
+  constructor() {}
 
-  connectAsync() {
+  connectAsync(option?: ConnectionOptions) {
     if (this._connection) {
       return Promise.resolve();
     }
-    this._connection = container.connect(this.option);
+    this._connection = container.connect(option);
     const connection = this._connection;
     return new Promise<void>((resolve, reject) => {
       connection.on('connection_open', () => {
