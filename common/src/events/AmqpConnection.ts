@@ -4,9 +4,12 @@ export class AmqpConnection {
   private _connection?: Connection;
 
   /**
-   * @returns {Connection | undefined} the connection if connected otherwise undefined
+   * @returns {Connection | undefined} the connected connection. If not connected, an error will be thrown
    */
   public get connection() {
+    if (!this._connection) {
+      throw new Error('Cannot access connection before connecting');
+    }
     return this._connection;
   }
 
@@ -20,7 +23,7 @@ export class AmqpConnection {
     const connection = this._connection;
     return new Promise<void>((resolve, reject) => {
       connection.on('connection_open', () => {
-        console.log('connected');
+        console.log(`${this.constructor.name} connected`);
         resolve();
       });
 
@@ -38,7 +41,7 @@ export class AmqpConnection {
 
     return new Promise<void>((resolve, reject) => {
       connection.on('connection_close', () => {
-        console.log('connection closed!');
+        console.log(`${this.constructor.name} closed`);
         resolve();
       });
 
