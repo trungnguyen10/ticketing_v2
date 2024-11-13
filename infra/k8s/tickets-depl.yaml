@@ -26,6 +26,14 @@ spec:
               secretKeyRef:
                 name: jwt-secret
                 key: JWT_KEY
+          - name: EVENT_BUS_USERNAME
+            value: 'eventbus'
+          - name: EVENT_BUS_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: event-bus-password
+                key: EVENT_BUS_PASSWORD
+
 ---
 apiVersion: v1
 kind: Service
