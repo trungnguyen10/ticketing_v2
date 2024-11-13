@@ -1,4 +1,5 @@
 import {
+  DomainTopic,
   InvalidError,
   NotFoundError,
   requireAuthentication,
@@ -10,6 +11,7 @@ import { body } from 'express-validator';
 import mongoose from 'mongoose';
 import { TicketDto } from '../Dtos/TicketDto';
 import { Ticket } from '../models/Ticket';
+import { OutBoxItem } from '../OutBox/OutBoxItem';
 
 const router = express.Router();
 
@@ -41,6 +43,20 @@ router.put(
     const { title, price } = req.body;
     ticket.set({ title, price });
     await ticket.save();
+
+    // TODO: wrapping around a transaction requires to setup replica set for local instance of MongoDb
+    const outBoxItem = await OutBoxItem.create({
+      topic: DomainTopic.TicketUpdated.toString(),
+      payload: {
+        id: ticket.id,
+        title: ticket.title,
+        price: ticket.price,
+        userId: ticket.userId,
+      },
+    });
+
+    await outBoxItem.save();
+
     res
       .status(200)
       .send(

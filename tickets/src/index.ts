@@ -1,17 +1,16 @@
 import mongoose from 'mongoose';
 import { app } from './app';
 import { amqpConnection } from './amqpConnection';
+import { Agenda } from '@hokify/agenda';
+import { publishOutBoxItemAsync } from './OutBox/publishOutBoxItem';
 
 if (!process.env.MONGO_URI) {
   throw new Error('MONGO_URI is not defined.');
 }
 
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => {
-    if (!process.env.JWT_KEY) {
-      throw new Error('JWT_KEY is not defined.');
-    }
+if (!process.env.JWT_KEY) {
+  throw new Error('JWT_KEY is not defined.');
+}
 
 if (!process.env.EVENT_BUS_USERNAME) {
   throw new Error('EVENT_BUS_USERNAME is not defined.');
@@ -21,6 +20,17 @@ if (!process.env.EVENT_BUS_PASSWORD) {
   throw new Error('EVENT_BUS_PASSWORD is not defined.');
 }
 
+const agenda = new Agenda({ db: { address: process.env.MONGO_URI } });
+
+agenda.define('ticket background job', async (_job) => {
+  try {
+    console.log('HANDLE BACKGROUND JOB');
+    await publishOutBoxItemAsync();
+  } catch (err) {
+    console.log('ERROR OCCURRED', err);
+  }
+});
+
 const startAsync = async () => {
   await amqpConnection.connectAsync({
     host: 'event-bus-srv',
@@ -29,9 +39,12 @@ const startAsync = async () => {
     password: process.env.EVENT_BUS_PASSWORD,
   });
   await mongoose.connect(process.env.MONGO_URI!);
-    app.listen(3000, () => {
-      console.log('Listening on port 3000!');
-    });
+  await agenda.start();
+
+  await agenda.every('5 seconds', 'ticket background job');
+  app.listen(3000, () => {
+    console.log('Listening on port 3000!');
+  });
 };
 
 startAsync();
