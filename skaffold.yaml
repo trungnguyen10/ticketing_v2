@@ -34,3 +34,7 @@ build:
         manual:
           - dest: .
             src: 'src/**/*.ts'
+    - image: event-bus
+      context: ./event-bus
+      docker:
+        dockerfile: Dockerfile

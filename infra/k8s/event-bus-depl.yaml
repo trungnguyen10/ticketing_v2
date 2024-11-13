@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: event-bus-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: event-bus
+  template:
+    metadata:
+      labels:
+        app: event-bus
+    spec:
+      containers:
+      - name: event-bus
+        image: event-bus
+        imagePullPolicy: Never
+        lifecycle:
+          postStart:
+            exec:
+              command: ["/bin/sh", "-c" , "sleep 5; rabbitmqctl await_startup; rabbitmqctl import_definitions /etc/rabbitmq/definitions.json"]
+        ports:
+        - containerPort: 5672
+        - containerPort: 15672
+        env:
+        - name: RABBITMQ_DEFAULT_USER
+          value: "eventbus"
+        - name: RABBITMQ_DEFAULT_PASS
+          valueFrom:
+            secretKeyRef:
+              name: event-bus-password
+              key: EVENT_BUS_PASSWORD
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: event-bus-srv
+spec:
+  selector:
+    app: event-bus
+  ports:
+  - name: client
+    protocol: TCP
+    port: 5672
+    targetPort: 5672
+  - name: monitoring
+    protocol: TCP
+    port: 15672
+    targetPort: 15672

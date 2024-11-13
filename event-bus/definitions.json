@@ -1,0 +1,87 @@
+{
+    "queues": [
+        {
+            "name": "ticket.created.order-service",
+            "vhost": "/",
+            "durable": true,
+            "auto_delete": false,
+            "arguments": {
+                "x-queue-type": "quorum",
+                "x-delivery-limit": 5,
+                "x-dead-letter-exchange": "ticket.created.pantry-management.dead-letter-exchange"
+            }
+        },
+        {
+            "name": "ticket.updated.order-service",
+            "vhost": "/",
+            "durable": true,
+            "auto_delete": false,
+            "arguments": {
+                "x-queue-type": "quorum",
+                "x-delivery-limit": 5
+            }
+        },
+        {
+            "name": "ticket.created.order-service.dead-letter-queue",
+            "vhost": "/",
+            "durable": true,
+            "auto_delete": false,
+            "arguments": {}
+        }
+    ],
+    "exchanges": [
+        {
+            "name": "ticket.created",
+            "vhost": "/",
+            "type": "fanout",
+            "durable": true,
+            "auto_delete": false,
+            "internal": false,
+            "arguments": {}
+        },
+        {
+            "name": "ticket.updated",
+            "vhost": "/",
+            "type": "fanout",
+            "durable": true,
+            "auto_delete": false,
+            "internal": false,
+            "arguments": {}
+        },
+        {
+            "name": "ticket.created.order-service.dead-letter-exchange",
+            "vhost": "/",
+            "type": "fanout",
+            "durable": true,
+            "auto_delete": false,
+            "internal": false,
+            "arguments": {}
+        }
+    ],
+    "bindings": [
+        {
+            "source": "ticket.created",
+            "vhost": "/",
+            "destination": "ticket.created.order-service",
+            "destination_type": "queue",
+            "routing_key": "",
+            "arguments": {}
+        },
+        {
+            "source": "ticket.updated",
+            "vhost": "/",
+            "destination": "ticket.updated.order-service",
+            "destination_type": "queue",
+            "routing_key": "",
+            "arguments": {}
+        },
+        {
+            "source": "ticket.created.order-service.dead-letter-exchange",
+            "vhost": "/",
+            "destination": "ticket.created.order-service.dead-letter-queue",
+            "destination_type": "queue",
+            "routing_key": "",
+            "arguments": {}
+        }
+    ]
+}
