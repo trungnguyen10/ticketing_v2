@@ -12,6 +12,12 @@ if (!process.env.JWT_KEY) {
   throw new Error('JWT_KEY is not defined.');
 }
 
+if (!process.env.EVENT_BUS_HOST) {
+  throw new Error('EVENT_BUS_HOST is not defined.');
+}
+if (!process.env.EVENT_BUS_PORT) {
+  throw new Error('EVENT_BUS_PORT is not defined.');
+}
 if (!process.env.EVENT_BUS_USERNAME) {
   throw new Error('EVENT_BUS_USERNAME is not defined.');
 }
@@ -24,7 +30,7 @@ const agenda = new Agenda({ db: { address: process.env.MONGO_URI } });
 
 agenda.define('ticket background job', async (_job) => {
   try {
-    console.log('HANDLE BACKGROUND JOB');
+    console.log('Handling background job...');
     await publishOutBoxItemAsync();
   } catch (err) {
     console.log('ERROR OCCURRED', err);
@@ -33,8 +39,8 @@ agenda.define('ticket background job', async (_job) => {
 
 const startAsync = async () => {
   await amqpConnection.connectAsync({
-    host: 'event-bus-srv',
-    port: 5672,
+    host: process.env.EVENT_BUS_HOST,
+    port: parseInt(process.env.EVENT_BUS_PORT!),
     username: process.env.EVENT_BUS_USERNAME,
     password: process.env.EVENT_BUS_PASSWORD,
   });

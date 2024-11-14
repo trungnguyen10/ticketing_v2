@@ -26,6 +26,10 @@ spec:
               secretKeyRef:
                 name: jwt-secret
                 key: JWT_KEY
+          - name: EVENT_BUS_HOST
+            value: 'event-bus-srv'
+          - name: EVENT_BUS_PORT
+            value: '5672'
           - name: EVENT_BUS_USERNAME
             value: 'eventbus'
           - name: EVENT_BUS_PASSWORD
