@@ -1,27 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: tickets
+  name: orders
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: tickets
+      app: orders
   template:
     metadata:
       labels:
-        app: tickets
+        app: orders
     spec:
       containers:
-      - name: tickets
-        image: tickets
+      - name: orders
+        image: orders
         imagePullPolicy: Never
         ports:
         - containerPort: 3000
         env:
           - name: MONGO_URI
-            value: 'mongodb://tickets-mongo-srv:27017/auth'
-            # value: 'mongodb://tickets-mongo-srv:27017/tickets?replicaSet=myReplicaSet'
+            value: 'mongodb://orders-mongo-srv:27017/auth'
           - name: JWT_KEY
             valueFrom:
               secretKeyRef:
@@ -43,12 +42,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: tickets-srv
+  name: orders-srv
 spec:
   selector:
-    app: tickets
+    app: orders
   ports:
-  - name: tickets
+  - name: orders
     protocol: TCP
     port: 3000
     targetPort: 3000
