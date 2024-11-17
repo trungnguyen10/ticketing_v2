@@ -24,3 +24,4 @@ export * from './events/DomainTopic';
 export * from './events/Publisher';
 export * from './events/Subscriber';
 export * from './events/TicketCreatedEvent';
+export * from './events/types/OrderStatus';
