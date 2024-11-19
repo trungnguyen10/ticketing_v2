@@ -10,6 +10,9 @@ import { body } from 'express-validator';
 import { OrderDto } from '../Dtos/OrderDto';
 import { Order } from '../models/Order';
 import { Ticket } from '../models/Ticket';
+import { amqpConnection } from '../amqpConnection';
+import { OrderCreatedPublisher } from '../events/publishers/OrderCreatedPublisher';
+import { resolvePublishAddress } from '../events/addressResolver';
 
 const router = express.Router();
 
@@ -44,7 +47,19 @@ router.post(
     });
     await order.save();
 
-    // TODO: publish an event
+    await new OrderCreatedPublisher(
+      amqpConnection,
+      resolvePublishAddress
+    ).publishAsync({
+      id: order.id,
+      status: order.status,
+      userId: order.userId,
+      expiresAt: order.expiresAt.toISOString(),
+      ticket: {
+        id: order.ticket.id,
+        price: order.ticket.price,
+      },
+    });
 
     res.status(201).send(OrderDto.FromOrderDocument(order));
   }

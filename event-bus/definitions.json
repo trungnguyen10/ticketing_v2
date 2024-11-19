@@ -7,8 +7,7 @@
             "auto_delete": false,
             "arguments": {
                 "x-queue-type": "quorum",
-                "x-delivery-limit": 5,
-                "x-dead-letter-exchange": "ticket.created.pantry-management.dead-letter-exchange"
+                "x-delivery-limit": 5
             }
         },
         {
@@ -22,11 +21,24 @@
             }
         },
         {
-            "name": "ticket.created.order-service.dead-letter-queue",
+            "name": "order.created.ticket-service",
             "vhost": "/",
             "durable": true,
             "auto_delete": false,
-            "arguments": {}
+            "arguments": {
+                "x-queue-type": "quorum",
+                "x-delivery-limit": 5
+            }
+        },
+        {
+            "name": "order.cancelled.ticket-service",
+            "vhost": "/",
+            "durable": true,
+            "auto_delete": false,
+            "arguments": {
+                "x-queue-type": "quorum",
+                "x-delivery-limit": 5
+            }
         }
     ],
     "exchanges": [
@@ -49,7 +61,16 @@
             "arguments": {}
         },
         {
-            "name": "ticket.created.order-service.dead-letter-exchange",
+            "name": "order.created",
+            "vhost": "/",
+            "type": "fanout",
+            "durable": true,
+            "auto_delete": false,
+            "internal": false,
+            "arguments": {}
+        },
+        {
+            "name": "order.cancelled",
             "vhost": "/",
             "type": "fanout",
             "durable": true,
@@ -76,9 +97,17 @@
             "arguments": {}
         },
         {
-            "source": "ticket.created.order-service.dead-letter-exchange",
+            "source": "order.created",
             "vhost": "/",
-            "destination": "ticket.created.order-service.dead-letter-queue",
+            "destination": "order.created.ticket-service",
+            "destination_type": "queue",
+            "routing_key": "",
+            "arguments": {}
+        },
+        {
+            "source": "order.cancelled",
+            "vhost": "/",
+            "destination": "order.cancelled.ticket-service",
             "destination_type": "queue",
             "routing_key": "",
             "arguments": {}
