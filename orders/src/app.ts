@@ -17,6 +17,10 @@ import {
   DefaultMappingStrategy,
   MapperRegistry,
 } from 'http-problem-details-mapper';
+import { createOrder } from './routes/createOrder';
+import { deleteOrder } from './routes/cancelOrder';
+import { getOrderById } from './routes/getOrderById';
+import { getOrders } from './routes/getOrders';
 
 const strategy = new DefaultMappingStrategy(
   new MapperRegistry({ useDefaultErrorMapper: false })
@@ -38,6 +42,11 @@ app.use(
   })
 );
 app.use(currentUserHandler);
+
+app.use(getOrders);
+app.use(getOrderById);
+app.use(createOrder);
+app.use(deleteOrder);
 
 app.use('/', (req, res) => {
   res.send('hello from tickets');

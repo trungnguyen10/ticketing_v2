@@ -1,13 +1,11 @@
-import {
-  DomainTopic,
-  requireAuthentication,
-  validateRequest,
-} from '@tnticketingdev/common';
+import { requireAuthentication, validateRequest } from '@tnticketingdev/common';
 import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
+import { amqpConnection } from '../amqpConnection';
 import { TicketDto } from '../Dtos/TicketDto';
+import { resolvePublishAddress } from '../events/addressResolver';
+import { TicketCreatedPublisher } from '../events/publishers/TicketCreatedPublisher';
 import { Ticket } from '../models/Ticket';
-import { OutBoxItem } from '../OutBox/OutBoxItem';
 
 const router = express.Router();
 
@@ -23,18 +21,15 @@ router.post(
     const ticket = Ticket.build({ title, price, userId });
     await ticket.save();
 
-    // TODO: wrapping around a transaction requires to setup replica set for local instance of MongoDb
-    const outBoxItem = await OutBoxItem.create({
-      topic: DomainTopic.TicketCreated.toString(),
-      payload: {
-        id: ticket.id,
-        title: ticket.title,
-        price: ticket.price,
-        userId: ticket.userId,
-      },
+    await new TicketCreatedPublisher(
+      amqpConnection,
+      resolvePublishAddress
+    ).publishAsync({
+      id: ticket.id,
+      title: ticket.title,
+      price: ticket.price,
+      userId: ticket.userId,
     });
-
-    await outBoxItem.save();
 
     res
       .status(201)

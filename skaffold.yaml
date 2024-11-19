@@ -38,3 +38,11 @@ build:
       context: ./event-bus
       docker:
         dockerfile: Dockerfile
+    - image: orders
+      context: ./orders
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: 'src/**/*.ts'
