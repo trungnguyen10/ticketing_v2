@@ -23,5 +23,6 @@ export * from './events/DomainEvent';
 export * from './events/DomainTopic';
 export * from './events/Publisher';
 export * from './events/Subscriber';
-export * from './events/TicketCreatedEvent';
+export * from './events/TicketEvents';
 export * from './events/types/OrderStatus';
+export * from './events/OrderEvents';
