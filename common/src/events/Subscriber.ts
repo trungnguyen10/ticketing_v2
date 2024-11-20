@@ -1,5 +1,6 @@
 import { Connection, EventContext, Message, Receiver } from 'rhea';
 import { DomainEvent } from './DomainEvent';
+import { AmqpConnection } from './AmqpConnection';
 
 export abstract class Subscriber<T extends DomainEvent> {
   abstract topic: T['topic'];
@@ -9,10 +10,10 @@ export abstract class Subscriber<T extends DomainEvent> {
   private receiver: Receiver | undefined;
 
   constructor(
-    connection: Connection,
+    connection: AmqpConnection,
     private resolveLinkAddress: (topic: T['topic'], queue: string) => string
   ) {
-    this.connection = connection;
+    this.connection = connection.connection;
   }
 
   subscribe() {
