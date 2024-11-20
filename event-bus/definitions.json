@@ -1,7 +1,7 @@
 {
     "queues": [
         {
-            "name": "ticket.created.order-service",
+            "name": "ticket.created.orders-service",
             "vhost": "/",
             "durable": true,
             "auto_delete": false,
@@ -11,7 +11,7 @@
             }
         },
         {
-            "name": "ticket.updated.order-service",
+            "name": "ticket.updated.orders-service",
             "vhost": "/",
             "durable": true,
             "auto_delete": false,
@@ -21,7 +21,7 @@
             }
         },
         {
-            "name": "order.created.ticket-service",
+            "name": "order.created.tickets-service",
             "vhost": "/",
             "durable": true,
             "auto_delete": false,
@@ -31,7 +31,7 @@
             }
         },
         {
-            "name": "order.cancelled.ticket-service",
+            "name": "order.cancelled.tickets-service",
             "vhost": "/",
             "durable": true,
             "auto_delete": false,
@@ -83,7 +83,7 @@
         {
             "source": "ticket.created",
             "vhost": "/",
-            "destination": "ticket.created.order-service",
+            "destination": "ticket.created.orders-service",
             "destination_type": "queue",
             "routing_key": "",
             "arguments": {}
@@ -91,7 +91,7 @@
         {
             "source": "ticket.updated",
             "vhost": "/",
-            "destination": "ticket.updated.order-service",
+            "destination": "ticket.updated.orders-service",
             "destination_type": "queue",
             "routing_key": "",
             "arguments": {}
@@ -99,7 +99,7 @@
         {
             "source": "order.created",
             "vhost": "/",
-            "destination": "order.created.ticket-service",
+            "destination": "order.created.tickets-service",
             "destination_type": "queue",
             "routing_key": "",
             "arguments": {}
@@ -107,7 +107,7 @@
         {
             "source": "order.cancelled",
             "vhost": "/",
-            "destination": "order.cancelled.ticket-service",
+            "destination": "order.cancelled.tickets-service",
             "destination_type": "queue",
             "routing_key": "",
             "arguments": {}

@@ -7,12 +7,12 @@ import {
 } from '@tnticketingdev/common';
 import express, { NextFunction, Request, Response } from 'express';
 import { body } from 'express-validator';
+import { amqpConnection } from '../amqpConnection';
 import { OrderDto } from '../Dtos/OrderDto';
+import { resolvePublishAddress } from '../events/addressResolver';
+import { OrderCreatedPublisher } from '../events/publishers/OrderCreatedPublisher';
 import { Order } from '../models/Order';
 import { Ticket } from '../models/Ticket';
-import { amqpConnection } from '../amqpConnection';
-import { OrderCreatedPublisher } from '../events/publishers/OrderCreatedPublisher';
-import { resolvePublishAddress } from '../events/addressResolver';
 
 const router = express.Router();
 

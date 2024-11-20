@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
 import { app } from './app';
 import { amqpConnection } from './amqpConnection';
-import { Agenda } from '@hokify/agenda';
 
 if (!process.env.MONGO_URI) {
   throw new Error('MONGO_URI is not defined.');

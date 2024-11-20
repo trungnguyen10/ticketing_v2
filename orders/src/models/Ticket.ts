@@ -3,6 +3,7 @@ import { Order } from './Order';
 import { OrderStatus } from '@tnticketingdev/common';
 
 interface ITicket {
+  id: string;
   title: string;
   price: number;
 }
@@ -26,7 +27,12 @@ const ticketSchema = new Schema<TicketDocument>({
   price: { type: Number, required: true, min: 0 },
 });
 
-ticketSchema.statics.build = (ticket: ITicket) => new Ticket(ticket);
+ticketSchema.statics.build = (ticket: ITicket) =>
+  new Ticket({
+    _id: ticket.id,
+    title: ticket.title,
+    price: ticket.price,
+  });
 
 ticketSchema.methods.isReservedAsync = async function () {
   const existingOrder = await Order.findOne({
